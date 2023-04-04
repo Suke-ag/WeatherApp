@@ -2,7 +2,7 @@
 
 // url: https://api.weatherapi.com/v1/forecast.json?key=0e526835a0264be7977173515230104&q=${city}&days=7&aqi=no&alerts=no
 
-const DefaultPlace = 'new delhi'
+const DefaultPlace = 'New Delhi'
 const CheckCity = /^[A-Za-z]+$/
 
 let api = '0e526835a0264be7977173515230104'
