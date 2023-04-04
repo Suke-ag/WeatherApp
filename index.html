@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WEATHER APP</title>
+    <link rel="icon" href="./Icon.png">
+    <!-- Font awesome -->
+    <script src="https://kit.fontawesome.com/7b1286c3f9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Bootstrap  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <!-- Css  -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="startTime(), GetWeather(DefaultPlace)">
+<!-- Navbar  -->
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md sticky-top opacity-75">
+        <div class="container-fluid px-0">
+            <a class="m-0 me-1" href="#">
+                <img src="./Icon.png" alt="Logo" width="30" height="24" class="d-none d-md-inline-block align-text-top">
+            </a>
+            <form onsubmit="event.preventDefault();" class="d-flex" role="search">
+                <input class="form-control me-2" id="Search_Place" type="search" placeholder="Place Name" aria-label="Search">
+                <button class="btn btn-outline-success" id="SearchButton" type="submit"><i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#weeklyforecast">Weekly Forecast</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About us</a></li>
+                </ul>
+            </div>
+            <div id="currentLocation">
+                <button id="deviceLocation" class="btn btn-outline-primary d-none d-sm-inline-block">Get Device Location</button>
+            </div>
+            <a class="navbar-brand" href="#"><span class="ms-3 d-none d-md-inline-block" id="app_name">WEATHER<span
+                        style="color:orange;">FORECAST</span></span></a>
+        </div>
+    </nav>
+<!-- /Navbar  -->
+    <p class="m-0 fw-medium fs-4" id="ErrorMsg"></p>
+    <!-- HOME -->
+    <section id="home" class="py-2" style="width: 97vw;">
+        <div class="container">
+            <div class="justify-content-center align-items-center text-center text-md-center">
+                <div class="row p-3 m-md-5 lead justify-content-center ">
+                    <div class="col-lg-5 col-sm-6  d-inline-block">
+                        <div class="card border-2 text-center">
+                            <div class="card-header" id="home-head-card">
+                                Weather App
+                            </div>
+                            <div class="card-body py-1" id="date-time">
+                                <div class="row justify-content-between">
+                                    <div class="col-6 text-start card-item" id="Date">
+                                        <i class="fa-solid fa-calendar-day"></i> dd/mm/yyyy
+                                    </div>
+                                    <div class="col-6 text-end card-item" id="Time">
+                                        <i class="fa-solid fa-clock"></i> 00:00
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body text-center py-1 weather-part"
+                                style="border-radius: 7px; box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.20);">
+                                <section class="weather-part">
+                                    <div class="card-item" id="ConditionIcon"></div>
+                                    <div class="temp card-item">
+                                        <span class="numb" id="Temperature">_</span>
+                                        <span class="deg">°</span>C
+                                    </div>
+                                    <div class="weather card-item" id="Condition">_ _</div>
+                                    <div class="bottom-details">
+                                        <div class="column Weather_Item card-item">
+                                            <h5><i class="fa-solid fa-wind"></i></h5>
+                                            <div class="details">
+                                                <div>
+                                                    <span id="WindSpeed">_</span>
+                                                    <span>Km/h</span>
+                                                </div>
+                                                <p class="m-0">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                        <div class="column humidity card-item">
+                                            <i class='bx bxs-droplet-half'></i>
+                                            <div class="details">
+                                                <span id="Humidity">_</span><span>&percnt;</span>
+                                                <p class="m-0">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="card-footer fw-bold card-item">
+                                <div class="location">
+                                    <i class='bx bx-map'></i>
+                                    <span id="Place_Name">_, _</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- weeklyforecast -->
+    <section id="weeklyforecast" class="py-2 my-md-5">
+        <div class="container  py-5" id="Forecast_Container">
+            <div class="row justify-content-around">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card  mb-5 shadow-sm card-item">
+                        <div id="Day1" class="card-header home-head-card">
+                            Day-1
+                        </div>
+                        <div class="card-body  opacity-75">
+                            <ul class="list-group list-group-flush" id="forecast-icon">
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <p id="Day1ConditionBox" class="m-0 fw-bold">Condition</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-wind"></i>
+                                                <span id="Day1Wind">_</span>
+                                                <p class="m-0 fw-bold">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-temperature-half"></i>
+                                                <span id="Day1Temperature" class="numb-2">_</span>
+                                                <p class="m-0 fw-bold">Temperature</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class='bx bxs-droplet-half'></i>
+                                                <span id="Day1Humidity">_</span>
+                                                <p class="m-0 fw-bold">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card  mb-5 shadow-sm card-item">
+                        <div id="Day2" class="card-header home-head-card">
+                            Day-2
+                        </div>
+                        <div class="card-body  opacity-75">
+                            <ul class="list-group list-group-flush" id="forecast-icon">
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <p id="Day2ConditionBox" class="m-0 fw-bold">Condition</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-wind"></i>
+                                                <span id="Day2Wind">_</span>
+                                                <p class="m-0 fw-bold">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-temperature-half"></i>
+                                                <span id="Day2Temperature" class="numb-2">_</span>
+                                                <p class="m-0 fw-bold">Temperature</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class='bx bxs-droplet-half'></i>
+                                                <span id="Day2Humidity">_</span>
+                                                <p class="m-0 fw-bold">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card  mb-5 shadow-sm card-item">
+                        <div id="Day3" class="card-header home-head-card">
+                            Day-3
+                        </div>
+                        <div class="card-body  opacity-75">
+                            <ul class="list-group list-group-flush" id="forecast-icon">
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <p id="Day3ConditionBox" class="m-0 fw-bold">Condition</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-wind"></i>
+                                                <span id="Day3Wind">_</span>
+                                                <p class="m-0 fw-bold">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-temperature-half"></i>
+                                                <span id="Day3Temperature" class="numb-2">_</span>
+                                                <p class="m-0 fw-bold">Temperature</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class='bx bxs-droplet-half'></i>
+                                                <span id="Day3Humidity">_</span>
+                                                <p class="m-0 fw-bold">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-around">
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card  mb-5 shadow-sm card-item">
+                        <div id="Day4" class="card-header home-head-card">
+                            Day-4
+                        </div>
+                        <div class="card-body  opacity-75">
+                            <ul class="list-group list-group-flush" id="forecast-icon">
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <p id="Day4ConditionBox" class="m-0 fw-bold">Condition</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-wind"></i>
+                                                <span id="Day4Wind">_</span>
+                                                <p class="m-0 fw-bold">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-temperature-half"></i>
+                                                <span id="Day4Temperature" class="numb-2">_</span>
+                                                <p class="m-0 fw-bold">Temperature</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class='bx bxs-droplet-half'></i>
+                                                <span id="Day4Humidity">_</span>
+                                                <p class="m-0 fw-bold">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card  mb-5 shadow-sm card-item">
+                        <div id="Day5" class="card-header home-head-card">
+                            Day-5
+                        </div>
+                        <div class="card-body  opacity-75">
+                            <ul class="list-group list-group-flush" id="forecast-icon">
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <p id="Day5ConditionBox" class="m-0 fw-bold">Condition</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-wind"></i>
+                                                <span id="Day5Wind">_</span>
+                                                <p class="m-0 fw-bold">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-temperature-half"></i>
+                                                <span id="Day5Temperature" class="numb-2">_</span>
+                                                <p class="m-0 fw-bold">Temperature</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class='bx bxs-droplet-half'></i>
+                                                <span id="Day5Humidity">_</span>
+                                                <p class="m-0 fw-bold">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card  mb-5 shadow-sm card-item">
+                        <div id="Day6" class="card-header home-head-card">
+                            Day-6
+                        </div>
+                        <div class="card-body  opacity-75">
+                            <ul class="list-group list-group-flush" id="forecast-icon">
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <p id="Day6ConditionBox" class="m-0 fw-bold">Condition</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-wind"></i>
+                                                <span id="Day6Wind">_</span>
+                                                <p class="m-0 fw-bold">Wind Speed</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class="fa-solid fa-temperature-half"></i>
+                                                <span id="Day6Temperature" class="numb-2">_</span>
+                                                <p class="m-0 fw-bold">Temperature</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="container text-center">
+                                        <div class="row">
+                                            <div class="col align-self-center">
+                                                <i class='bx bxs-droplet-half'></i>
+                                                <span id="Day6Humidity">_</span>
+                                                <p class="m-0 fw-bold">Humidity</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ <!-- Footer  -->
+    <footer class="footer bg-dark" style="color: white;" id="about">
+        <div class="App-Logo d-sm-none d-inline-block d-md-inline-block">
+            <p id="app_name">WEATHER<span>FORECAST</span></p>
+        </div>
+        <div class="DesignerInfo">
+            <p class="m-0 d-none d-sm-inline-block fw-medium fs-5">Designed and Developed By <span id="Name">Mohit
+                    Agarwal</span></p>
+        </div>
+        <div class="SocialMedia">
+            <a href="https://github.com/Suke-ag" target="_blank" title="Github-Profile"><i
+                    class="fa-brands fa-github"></i>
+                <a href="https://www.linkedin.com/in/mohitag026/" target="_blank" title="Linkdin-Profile"><i
+                        class="fa-brands fa-linkedin-in"></i>
+        </div>
+    </footer>
+<!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
