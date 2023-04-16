@@ -13,3 +13,6 @@
 >You can also search your desired place's weather by entering the name of the place in the searach box.
 
 User must give a correct and valid name of the place in search box to get the Weather otherwise it will show an error message.
+
+
+>As the Free trial of weatherapi.com ended this app now shows forecast of 2 days only
