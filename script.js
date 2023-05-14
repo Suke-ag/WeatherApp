@@ -1,11 +1,11 @@
-// API Key: 0e526835a0264be7977173515230104
+// API Key: 6b1f7c281c7943edacc95038231405
 
 // url: https://api.weatherapi.com/v1/forecast.json?key=0e526835a0264be7977173515230104&q=${city}&days=7&aqi=no&alerts=no
 
 const DefaultPlace = 'New Delhi'
 const CheckCity = /^[A-Za-z]+$/
 
-let api = '0e526835a0264be7977173515230104'
+let api = '6b1f7c281c7943edacc95038231405'
 
 let WeatherContainer = document.querySelector('.Weather_Container')
 let CurrentDate = document.getElementById('Date')
