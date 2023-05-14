@@ -1,6 +1,6 @@
 // API Key: 6b1f7c281c7943edacc95038231405
 
-// url: https://api.weatherapi.com/v1/forecast.json?key=0e526835a0264be7977173515230104&q=${city}&days=7&aqi=no&alerts=no
+// url: https://api.weatherapi.com/v1/forecast.json?key=6b1f7c281c7943edacc95038231405&q=${city}&days=7&aqi=no&alerts=no
 
 const DefaultPlace = 'New Delhi'
 const CheckCity = /^[A-Za-z]+$/
@@ -88,7 +88,7 @@ locationBtn.addEventListener('click', () => {
 function positionCordinates(position) {
   const latitude = position.coords.latitude
   const longitude = position.coords.longitude
-  api = `https://api.weatherapi.com/v1/forecast.json?key=0e526835a0264be7977173515230104&q=${latitude},${longitude}&days=7&aqi=no&alerts=no`
+  api = `https://api.weatherapi.com/v1/forecast.json?key=6b1f7c281c7943edacc95038231405&q=${latitude},${longitude}&days=7&aqi=no&alerts=no`
   fetchData()
 }
 function onError(error) {
@@ -116,7 +116,7 @@ function fetchData() {
 }
 
 const GetWeather = (city) => {
-  const url = `https://api.weatherapi.com/v1/forecast.json?key=0e526835a0264be7977173515230104&q=${city}&days=7&aqi=no&alerts=no`
+  const url = `https://api.weatherapi.com/v1/forecast.json?key=6b1f7c281c7943edacc95038231405&q=${city}&days=7&aqi=no&alerts=no`
 
   fetch(url)
     .then((resp) => resp.json())
